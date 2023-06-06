@@ -39,20 +39,22 @@ def get_api_xy(key, Lon, Lat):
     except:
         app = "errorMUGxy"
     return app
-def get_api_now(key):
-    #API 이름 주소
+def get_api_xy(key, Lon, Lat):
     url = 'http://apis.data.go.kr/B552657/ErmctInfoInqireService'
-    #query 넣어야 하는것
-    params = {"serviceKey": key,
-              'numOfRows' : '1000'}
-    #API 상세기능 목록
-    PATH = "getEmrrmRltmUsefulSckbdInfoInqire"
+    params = {
+        "serviceKey": key,
+        'WGS84_LON': str(Lon),
+        'WGS84_LAT': str(Lat),
+        'numOfRows': '100'
+    }
+    PATH = "getEgytLcinfoInqire"
     URL = f"{url}/{PATH}"
     response = requests.get(URL, params=params)
     try:
         app = BeautifulSoup(response.content, 'xml')
-    except:
-        app = "errorMUGnow"
+    except Exception as e:
+        app = None
+        print("An error occurred while parsing XML:", e)
     return app
 
 
